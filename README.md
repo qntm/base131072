@@ -1,6 +1,6 @@
 # base131072
 
-Base131072 is a binary encoding optimised for UTF-32-encoded text and Twitter, the intended successor to [Base65536](https://github.com/ferno/base65536).
+Base131072 is a binary encoding optimised for UTF-32-encoded text and Twitter; it is the intended successor to [Base65536](https://github.com/ferno/base65536). This JavaScript module, `base131072`, is an implementation of this encoding.
 
 Efficiency ratings are averaged over long inputs. Higher is better.
 
@@ -98,7 +98,7 @@ For example, using Base64, up to 105 bytes of binary data can fit in a Tweet. Wi
 
 ## How does it work?
 
-Base131072 is a 17-bit encoding. Essentially, we take the input binary data as a sequence of 8-bit numbers, compact it into a sequence of bits, then dice the bits up again to make a sequence of 17-bit numbers. We then encode each of these 2<sup>17</sup> = 131,072 possible numbers as a different Unicode code point.
+Base131072 is a 17-bit encoding. We take the input binary data as a sequence of 8-bit numbers, compact it into a sequence of bits, then dice the bits up again to make a sequence of 17-bit numbers. We then encode each of these 2<sup>17</sup> = 131,072 possible numbers as a different Unicode code point.
 
 ### Padding
 
@@ -126,7 +126,7 @@ we pad the incomplete 17-bit number out to 17 bits using 1s:
 	bbbcccccccc111111
 	bbcccccccc1111111
 
-and then encode as normal using our 2<sup>17</sup>-bit repertoire. On decoding, we get a series of 8-bit values, the last of which will be incomplete, like so:
+and then encode as normal using our 2<sup>17</sup>-bit repertoire. On decoding, we get a series of 8-bit values, the last of which will be incomplete apart from those padding bits, like so:
 
 	1_______
 	11______
@@ -136,7 +136,7 @@ and then encode as normal using our 2<sup>17</sup>-bit repertoire. On decoding, 
 	111111__
 	1111111_
 
-which we check, acknowledge and discard.
+We check this and discard this final incomplete value.
 
 #### Final 17-bit number has 8 to 15 missing bits
 
@@ -162,7 +162,7 @@ we encode them differently. We'll pad the incomplete number out to only 9 bits u
 	ccc111111
 	cc1111111
 
-and then encode them using a completely different, 2<sup>9</sup>-character repertoire. On decoding, we will treat that character differently, returning those original 9 bits and appending them to bit stream before dicing it up into 8-bit values again. Again, there could be a final incomplete 8-bit value:
+and then encode them using a completely different, 2<sup>9</sup>-character repertoire. On decoding, we will treat that character differently, returning 9 bits (rather than 17 from characters in the main repertoire). After dicing the bit stream into 8-bit values again, there could be no final incomplete value, in which case no further processing is needed. Or there could be one:
 
 	1_______
 	11______
@@ -172,7 +172,7 @@ and then encode them using a completely different, 2<sup>9</sup>-character reper
 	111111__
 	1111111_
 
-which we check, acknowledge and discard. (Or there might be no incomplete final 8-bit value, in which case we're fine.)
+which we check, acknowledge and discard.
 
 #### Final 17-bit number has 16 missing bits
 
@@ -184,10 +184,12 @@ we simply take this as a 1-bit number:
 
 	c
 
-and encode it using a third, 2<sup>1</sup>-character repertoire. There is no extraneous padding on decoding, we will get back a sequence of complete 8-bit values and nothing else.
+and encode it using a third, 2<sup>1</sup>-character repertoire. Again, on decoding, this is treated specially, and only 1 bit is added to the stream, rather than 9 or 17 as for the other characters.
 
-In other words, we use a total of 2<sup>17</sup> + 2<sup>9</sup> + 2<sup>1</sup> = 131,585 characters for this encoding.
+We will find that there is no extraneous padding on decoding. We will get back a sequence of complete 8-bit values and nothing else.
+
+In other words, Base131072 is a slight misnomer. It uses not 131,072 but 2<sup>17</sup> + 2<sup>9</sup> + 2<sup>1</sup> = 131,586 characters for its three repertoires. Of course, Base64 uses a 65th character for its padding too.
 
 ## Is this ready yet?
 
-No. We need 131,585 "safe" characters for this encoding, but as of Unicode 8.0 only 101,064 exist. (A calculation for Unicode 9.0 is forthcoming but we know already that it's not enough.) However, future versions of Unicode may add enough safe characters for this to be made possible.
+No. We need 131,586 "safe" characters for this encoding, but as of Unicode 8.0 only 101,064 exist. (A calculation for Unicode 9.0 is forthcoming but we know already that it's not enough.) However, future versions of Unicode may add enough safe characters for this to be made possible. In any case, the groundwork can certainly be laid.
