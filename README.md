@@ -1,6 +1,6 @@
 # base131072
 
-Base131072 is a binary encoding optimised for UTF-32-encoded text and Twitter; it is the intended successor to [Base65536](https://github.com/ferno/base65536). This JavaScript module, `base131072`, is an implementation of this encoding.
+Base131072 is a binary encoding optimised for UTF-32-encoded text and Twitter; it is the intended successor to [Base65536](https://github.com/ferno/base65536). This JavaScript module, `base131072`, is an implementation of this encoding... however, it can't be used yet because there aren't enough safe Unicode characters.
 
 Efficiency ratings are averaged over long inputs. Higher is better.
 
@@ -86,9 +86,9 @@ Efficiency ratings are averaged over long inputs. Higher is better.
 		</tr>
 		<tr>
 			<td>Base131072</td>
-			<td><code><a href="https://github.com/ferno/base131072">base131072</a></code></td>
-			<td style="text-align: right;">?</td>
-			<td style="text-align: right;">?</td>
+			<td><code><a href="https://github.com/ferno/base131072">base131072</a></code> (prototype)</td>
+			<td style="text-align: right;">53%+</td>
+			<td style="text-align: right;">53%+</td>
 			<td style="text-align: right;"><strong>53%</strong></td>
 		</tr>
 	</tbody>
