@@ -98,7 +98,7 @@ For example, using Base64, up to 105 bytes of binary data can fit in a Tweet. Wi
 
 ## How does it work?
 
-Base131072 is a 17-bit encoding. Essentially, we take the input binary data as a sequence of 8-bit numbers, compact it into a sequence of bits, then dice the bits up again to make a sequence of 17-bit numbers. We then encode each of these 2^17 = 131,072 possible numbers as a different Unicode code point.
+Base131072 is a 17-bit encoding. Essentially, we take the input binary data as a sequence of 8-bit numbers, compact it into a sequence of bits, then dice the bits up again to make a sequence of 17-bit numbers. We then encode each of these 2<sup>17</sup> = 131,072 possible numbers as a different Unicode code point.
 
 ### Padding
 
@@ -126,7 +126,7 @@ we pad the incomplete 17-bit number out to 17 bits using 1s:
 	bbbcccccccc111111
 	bbcccccccc1111111
 
-and then encode as normal using our 2^17-bit repertoire. On decoding, we get a series of 8-bit values, the last of which will be incomplete, like so:
+and then encode as normal using our 2<sup>17</sup>-bit repertoire. On decoding, we get a series of 8-bit values, the last of which will be incomplete, like so:
 
 	1_______
 	11______
@@ -162,7 +162,7 @@ we encode them differently. We'll pad the incomplete number out to only 9 bits u
 	ccc111111
 	cc1111111
 
-and then encode them using a completely different, 2^9-character repertoire. On decoding, we will treat that character differently, returning those original 9 bits and appending them to bit stream before dicing it up into 8-bit values again. Again, there could be a final incomplete 8-bit value:
+and then encode them using a completely different, 2<sup>9</sup>-character repertoire. On decoding, we will treat that character differently, returning those original 9 bits and appending them to bit stream before dicing it up into 8-bit values again. Again, there could be a final incomplete 8-bit value:
 
 	1_______
 	11______
@@ -184,10 +184,10 @@ we simply take this as a 1-bit number:
 
 	c
 
-and encode it using a third, 2^1-character repertoire. There is no extraneous padding on decoding, we will get back a sequence of complete 8-bit values and nothing else.
+and encode it using a third, 2<sup>1</sup>-character repertoire. There is no extraneous padding on decoding, we will get back a sequence of complete 8-bit values and nothing else.
 
-In other words, we use a total of 2^17 + 2^9 + 2^1 = 131,585 characters for this encoding.
+In other words, we use a total of 2<sup>17</sup> + 2<sup>9</sup> + 2<sup>1</sup> = 131,585 characters for this encoding.
 
 ## Is this ready yet?
 
-No. We need 131,585 "safe" characters for this encoding, but as of Unicode 8.0 only 101,064 exist. (A calculation for Unicode 9.0 is forthcoming but I can tell you know that it's still not enough.) However, future versions of Unicode may add enough safe characters for this to be made possible.
+No. We need 131,585 "safe" characters for this encoding, but as of Unicode 8.0 only 101,064 exist. (A calculation for Unicode 9.0 is forthcoming but we know already that it's not enough.) However, future versions of Unicode may add enough safe characters for this to be made possible.
