@@ -1,6 +1,6 @@
 # base131072
 
-Base131072 is a binary encoding optimised for UTF-32-encoded text and Twitter.
+Base131072 is a binary encoding optimised for UTF-32-encoded text and Twitter, the intended successor to [Base65536](https://github.com/ferno/base65536).
 
 Efficiency ratings are averaged over long inputs. Higher is better.
 
@@ -108,7 +108,7 @@ Note that the final 17-bit number in the sequence is likely to be "incomplete", 
 
 In the following cases:
 
-	bbbbbbbbcccccccc_ // 1 missing bits
+	bbbbbbbbcccccccc_ // 1 missing bit
 	bbbbbbbcccccccc__ // 2 missing bits
 	bbbbbbcccccccc___ // 3 missing bits
 	bbbbbcccccccc____ // 4 missing bits (note: this is how a Tweet containing 297 bytes of data will end)
@@ -126,7 +126,17 @@ we pad the incomplete 17-bit number out to 17 bits using 1s:
 	bbbcccccccc111111
 	bbcccccccc1111111
 
-and then encode as normal using our 2^17-bit repertoire. On decoding, there will be up to 7 extraneous padding 1s, which we acknowledge and discard.
+and then encode as normal using our 2^17-bit repertoire. On decoding, we get a series of 8-bit values, the last of which will be incomplete, like so:
+
+	1_______
+	11______
+	111_____
+	1111____
+	11111___
+	111111__
+	1111111_
+
+which we check, acknowledge and discard.
 
 #### Final 17-bit number has 8 to 15 missing bits
 
@@ -152,7 +162,17 @@ we encode them differently. We'll pad the incomplete number out to only 9 bits u
 	ccc111111
 	cc1111111
 
-and then encode them using a completely different, 2^9-character repertoire. On decoding, there will be up to 7 extraneous padding 1s, which we discard.
+and then encode them using a completely different, 2^9-character repertoire. On decoding, we will treat that character differently, returning those original 9 bits and appending them to bit stream before dicing it up into 8-bit values again. Again, there could be a final incomplete 8-bit value:
+
+	1_______
+	11______
+	111_____
+	1111____
+	11111___
+	111111__
+	1111111_
+
+which we check, acknowledge and discard. (Or there might be no incomplete final 8-bit value, in which case we're fine.)
 
 #### Final 17-bit number has 16 missing bits
 
@@ -164,6 +184,10 @@ we simply take this as a 1-bit number:
 
 	c
 
-and encode it using a third, 2^1-character repertoire. There is no extraneous padding on decoding.
+and encode it using a third, 2^1-character repertoire. There is no extraneous padding on decoding, we will get back a sequence of complete 8-bit values and nothing else.
 
 In other words, we use a total of 2^17 + 2^9 + 2^1 = 131,585 characters for this encoding.
+
+## Is this ready yet?
+
+No. We need 131,585 "safe" characters for this encoding, but as of Unicode 8.0 only 101,064 exist. (A calculation for Unicode 9.0 is forthcoming but I can tell you know that it's still not enough.) However, future versions of Unicode may add enough safe characters for this to be made possible.
