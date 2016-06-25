@@ -126,17 +126,7 @@ we pad the incomplete 17-bit number out to 17 bits using 1s:
 	bbbcccccccc111111
 	bbcccccccc1111111
 
-and then encode as normal using our 2<sup>17</sup>-bit repertoire. On decoding, we get a series of 8-bit values, the last of which will be incomplete apart from those padding bits, like so:
-
-	1_______
-	11______
-	111_____
-	1111____
-	11111___
-	111111__
-	1111111_
-
-We check this and discard this final incomplete value.
+and then encode as normal using our 2<sup>17</sup>-bit repertoire.
 
 #### Final 17-bit number has 8 to 15 missing bits
 
@@ -162,17 +152,7 @@ we encode them differently. We'll pad the incomplete number out to only 9 bits u
 	ccc111111
 	cc1111111
 
-and then encode them using a completely different, 2<sup>9</sup>-character repertoire. On decoding, we will treat that character differently, returning 9 bits (rather than 17 from characters in the main repertoire). After dicing the bit stream into 8-bit values again, there could be no final incomplete value, in which case no further processing is needed. Or there could be one:
-
-	1_______
-	11______
-	111_____
-	1111____
-	11111___
-	111111__
-	1111111_
-
-which we check, acknowledge and discard.
+and then encode them using a completely different, 2<sup>9</sup>-character repertoire. On decoding, we will treat that character differently, returning 9 bits, rather than 17 from characters in the main repertoire.
 
 #### Final 17-bit number has 16 missing bits
 
@@ -186,9 +166,21 @@ we simply take this as a 1-bit number:
 
 and encode it using a third, 2<sup>1</sup>-character repertoire. Again, on decoding, this is treated specially, and only 1 bit is added to the stream, rather than 9 or 17 as for the other characters.
 
-We will find that there is no extraneous padding on decoding. We will get back a sequence of complete 8-bit values and nothing else.
-
 In other words, Base131072 is a slight misnomer. It uses not 131,072 but 2<sup>17</sup> + 2<sup>9</sup> + 2<sup>1</sup> = 131,586 characters for its three repertoires. Of course, Base64 uses a 65th character for its padding too.
+
+### Decoding
+
+On decoding, we get a series of 8-bit values, the last of which might be incomplete, like so:
+
+	1_______ // 7 missing bits
+	11______ // 6 missing bits
+	111_____ // 5 missing bits
+	1111____ // 4 missing bits
+	11111___ // 3 missing bits
+	111111__ // 2 missing bits
+	1111111_ // 1 missing bit
+
+These are the padding 1s added at encoding time. We can check this and discard this final value.
 
 ## Is this ready yet?
 
