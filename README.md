@@ -184,4 +184,4 @@ These are the padding 1s added at encoding time. We can check this and discard t
 
 ## Is this ready yet?
 
-No. We need 131,586 "safe" characters for this encoding, but as of Unicode 8.0 only 101,064 exist. (A calculation for Unicode 9.0 is forthcoming but we know already that it's not enough.) However, future versions of Unicode may add enough safe characters for this to be made possible. In any case, the groundwork can certainly be laid.
+No. We need 131,586 "safe" characters for this encoding, but as of Unicode 9.0 only 108,397 exist. However, future versions of Unicode may add enough safe characters for this to become possible. In any case, the groundwork can certainly be laid.
