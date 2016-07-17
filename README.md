@@ -94,7 +94,7 @@ Efficiency ratings are averaged over long inputs. Higher is better.
 	</tbody>
 </table>
 
-For example, using Base64, up to 105 bytes of binary data can fit in a Tweet. With Base131072, 297 bytes are possible. (297.5, in fact.)
+For example, using Base64, up to 105 bytes of binary data can fit in a Tweet. With Base131072, 297 bytes are possible.
 
 ## How does it work?
 
