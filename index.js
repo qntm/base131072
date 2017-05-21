@@ -89,7 +89,7 @@ module.exports = {
 	*/
 	decode: function(str) {
 		var chars = [...str];
-		var codePoints = chars.map(ch => ch.codePointAt(0);
+		var codePoints = chars.map(ch => ch.codePointAt(0));
 
 		// Special case for the final character, which may be padding.
 		var k;
