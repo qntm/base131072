@@ -16,6 +16,6 @@
 	"author": "qntm",
 	"license": "MIT",
 	"devDependencies": {
-		"standard": "^14.3.4"
+		"standard": "^15.0.0"
 	}
 }
