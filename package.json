@@ -1,21 +1,22 @@
 {
-	"name": "base131072",
-	"version": "0.0.2",
-	"description": "Binary-to-text encoding highly optimised for UTF-16",
-	"homepage": "https://github.com/qntm/base131072",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/qntm/base131072.git"
-	},
-	"main": "src/index.js",
-	"keywords": [],
-	"scripts": {
-		"test": "standard"
-	},
-	"dependencies": {},
-	"author": "qntm",
-	"license": "MIT",
-	"devDependencies": {
-		"standard": "^17.0.0"
-	}
+  "name": "base131072",
+  "version": "1.0.0",
+  "description": "Binary-to-text encoding highly optimised for UTF-32",
+  "homepage": "https://github.com/qntm/base131072",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/qntm/base131072.git"
+  },
+  "type": "module",
+  "main": "src/index.js",
+  "keywords": [],
+  "scripts": {
+    "test": "standard"
+  },
+  "dependencies": {},
+  "author": "qntm",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^17.0.0"
+  }
 }
